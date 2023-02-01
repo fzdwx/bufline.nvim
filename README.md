@@ -11,7 +11,7 @@
     "fzdwx/bufline.nvim",
     event = "BufReadPre",
     dependencies = {
-        "nvim-tree/nvim-web-devicons", -- optional dependency
+        "nvim-tree/nvim-web-devicons",
     },
     config = function()
         local buf = require("bufline")
