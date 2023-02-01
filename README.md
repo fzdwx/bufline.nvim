@@ -31,6 +31,6 @@ BufferTitleSel
 BufferTitleNoSel
 ```
 
-## Thinks
+## Thanks
 1. [luatab](https://github.com/alvarosevilla95/luatab.nvim)
 2. [barbar](https://github.com/romgrk/barbar.nvim)
