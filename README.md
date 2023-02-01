@@ -9,7 +9,10 @@
 ```lua
 {
     "fzdwx/bufline.nvim",
-    event = "VeryLazy",
+    event = "BufReadPre",
+    dependencies = {
+        "nvim-tree/nvim-web-devicons", -- optional dependency
+    },
     config = function()
         local buf = require("bufline")
         buf.setup({
@@ -31,6 +34,7 @@ BufLineTitleSel
 BufLineTitleNoSel
 BufLineFill
 BufLine
+BufLineFolder
 ```
 
 ## Thanks

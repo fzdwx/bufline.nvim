@@ -7,13 +7,26 @@ local hl_groups = {}
 local fill_hl = "BufLineFill"
 local title_hl = "BufLineTitle"
 local line_hl = "BufLine"
+local set_hl = vim.api.nvim_set_hl
+
+--- @return Group
+M.folder = function(count)
+    local str = "📁 "
+    if count > 0 then
+        str = "📂 "
+    end
+    return {
+        str = str,
+        hl = "BufLineFolder",
+    }
+end
 
 --- @return Group
 M.dirName = function(bufnr)
-    local dirName = api.nvim_eval("$PWD == $HOME ? '~' : substitute($PWD, '\\v(.*/)*', '', 'g')")
+    local name = api.nvim_eval("$PWD == $HOME ? '~' : substitute($PWD, '\\v(.*/)*', '', 'g')")
     return {
-        str = dirName,
-        hl = fill_hl
+        str = name .. " ",
+        hl = fill_hl,
     }
 end
 
@@ -47,7 +60,7 @@ M.title = function(bufnr, buffer_status)
     end
 
     return {
-        str = " " .. name .. " ",
+        str = " " .. name .. M.modified(bufnr) .. " ",
         hl = title_hl .. buffer_status
     }
 
@@ -89,7 +102,7 @@ M.devicon = function(bufnr, buffer_status, isSelected)
     }
 end
 
-M.separator = function(index)
+M.separator = function()
     return {
         str = '',
         hl = fill_hl
@@ -125,7 +138,13 @@ end
 
 M.bufline = function()
     local current = fn.bufnr('%')
-    local line = util.format(util.check_hl_nil(M.dirName(current)))
+    local last = fn.bufnr('$')
+    local header = {
+        util.check_hl_nil(M.folder(last)),
+        util.check_hl_nil(M.dirName(current)),
+        util.check_hl_nil(M.separator())
+    }
+    local line = util.groups_to_string(header)
 
     --[[ 每一个buffer ]]
     for _, i in pairs(api.nvim_list_bufs()) do
@@ -135,7 +154,7 @@ M.bufline = function()
     end
 
     line = line .. '%#' .. fill_hl .. '#%='
-    if vim.fn.tabpagenr('$') > 1 then
+    if last > 1 then
         line = line .. '%#' .. line_hl .. '#%999XX'
     end
 
@@ -162,7 +181,11 @@ local setup = function(opts)
     if opts.tabline then
         M.tabline = opts.tabline
     end
+    if opts.folder then
+        M.folder = opts.folder
+    end
 
+    set_hl(0, "BufLineFolder", { default = true, bg = "", fg = "" })
     vim.opt.tabline = '%!v:lua.require\'bufline\'.show()'
     vim.cmd("set showtabline=2")
 end
