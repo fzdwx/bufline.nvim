@@ -173,6 +173,17 @@ function M.hl_tabline(group)
     return '%#' .. group .. '#'
 end
 
+--- @class Group
+--- @field hl string
+--- @field str string
+
+--- format group
+--- @param group Group
+function M.format(group)
+    return group.hl .. group.str:gsub('%%', '%%%%')
+end
+
+--- @param groups Group[]
 function M.groups_to_string(groups)
     local result = ''
 
@@ -185,6 +196,14 @@ function M.groups_to_string(groups)
     end
 
     return result
+end
+
+function M.check_hl_nil(group)
+    if group.hl == nil then
+        group.hl = ''
+    end
+    group.hl = M.hl_tabline(group.hl)
+    return group
 end
 
 return M

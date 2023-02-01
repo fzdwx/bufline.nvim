@@ -1,7 +1,21 @@
 local M = {}
 local util = require 'bufline.util'
 local fn = vim.fn
+local hlexists = vim.fn.hlexists
+local hl_groups = {}
+local empty_hl = util.hl_tabline("")
 
+--- @return Group
+M.dirName = function(bufnr)
+    local file = fn.bufname(bufnr)
+    local dir = fn.fnamemodify(file, ':h')
+    local dirName = fn.fnamemodify(dir, ':t')
+    return {
+        str = dirName,
+    }
+end
+
+--- @return Group
 M.title = function(bufnr, buffer_status)
     local file = vim.fn.bufname(bufnr)
     local buftype = vim.fn.getbufvar(bufnr, '&buftype')
@@ -41,9 +55,7 @@ M.modified = function(bufnr)
     return vim.fn.getbufvar(bufnr, '&modified') == 1 and '[+] ' or ''
 end
 
-local hlexists = vim.fn.hlexists
-local hl_groups = {}
-
+--- @return Group
 M.devicon = function(bufnr, buffer_status, isSelected)
     local icon, icon_hl
     local file = vim.fn.bufname(bufnr)
@@ -60,7 +72,7 @@ M.devicon = function(bufnr, buffer_status, isSelected)
     elseif buftype == 'terminal' then
         icon, icon_hl = devicons.get_icon('zsh')
     else
-        icon, icon_hl = devicons.get_icon(file, vim.fn.expand('#' .. bufnr .. ':e'))
+        icon, icon_hl = devicons.get_icon(file, vim.fn.expand('#' .. bufnr .. ':e'), { default = true })
     end
 
     if icon_hl and hlexists(icon_hl .. buffer_status) < 1 then
@@ -78,23 +90,18 @@ end
 M.separator = function(index)
     return {
         str = '',
-        hl = ""
     }
 end
 
-M.cell = function(index)
-    local current = fn.bufnr('%')
+M.cell = function(index, current)
     local isSelected = current == index
     local buffer_status = isSelected and 'Sel' or 'NoSel'
 
-    local icon = M.devicon(index, buffer_status, isSelected)
-    icon.hl = util.hl_tabline(icon.hl)
-    local name = M.title(index, buffer_status)
-    name.hl = util.hl_tabline(name.hl)
-    local separator = M.separator(index)
-    separator.hl = util.hl_tabline(separator.hl)
+    local icon = util.check_hl_nil(M.devicon(index, buffer_status, isSelected))
+    local name = util.check_hl_nil(M.title(index, buffer_status))
+    local separator = util.check_hl_nil(M.separator(index))
 
-    local empty = { str = " ", hl = util.hl_tabline("") }
+    local empty = { str = " ", hl = empty_hl }
 
     local cells = {
         empty,
@@ -114,10 +121,11 @@ M.cell = function(index)
 end
 
 M.bufline = function()
-    local line = ''
+    local current = fn.bufnr('%')
+    local line = util.format(util.check_hl_nil(M.dirName(current)))
     for _, i in pairs(vim.api.nvim_list_bufs()) do
         if fn.bufexists(i) == 1 and fn.buflisted(i) == 1 then
-            line = line .. M.cell(i)
+            line = line .. M.cell(i, current)
         end
     end
     line = line .. '%#BufLineFill#%='
