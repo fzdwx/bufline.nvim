@@ -113,7 +113,7 @@ M.cell = function(index)
 
 end
 
-M.tabline = function()
+M.bufline = function()
     local line = ''
     for _, i in pairs(vim.api.nvim_list_bufs()) do
         if fn.bufexists(i) == 1 and fn.buflisted(i) == 1 then
@@ -154,5 +154,5 @@ end
 
 return {
     setup = setup,
-    show = M.tabline,
+    show = M.bufline,
 }

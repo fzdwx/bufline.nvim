@@ -11,7 +11,7 @@
     "fzdwx/bufline.nvim",
     event = "VeryLazy",
     config = function()
-        local buf = require("bufferline")
+        local buf = require("bufline")
         buf.setup({
             separator = function(index)
                 return {
