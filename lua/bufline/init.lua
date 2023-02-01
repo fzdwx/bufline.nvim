@@ -126,7 +126,7 @@ M.cell = function(index, current)
         separator,
     }
 
-    return util.groups_to_string(cells)
+    return util.format_groups(cells)
 
     --return hl .. '%T' .. ' ' ..
     --        M.devicon(index, isSelected) .. '%#TabLineSel#' ..
@@ -144,7 +144,7 @@ M.bufline = function()
         util.check_hl_nil(M.dirName(current)),
         util.check_hl_nil(M.separator())
     }
-    local line = util.groups_to_string(header)
+    local line = util.format_groups(header)
 
     --[[ 每一个buffer ]]
     for _, i in pairs(api.nvim_list_bufs()) do

@@ -184,7 +184,7 @@ function M.format(group)
 end
 
 --- @param groups Group[]
-function M.groups_to_string(groups)
+function M.format_groups(groups)
     local result = ''
 
     for _, group in ipairs(groups) do
@@ -192,7 +192,7 @@ function M.groups_to_string(groups)
         --       tabline.
         --       To escape '%', we make it '%%'. It just so happens that '%' is also a special character
         --       in Lua, so we have write '%%' to mean '%'.
-        result = result .. group.hl .. group.str:gsub('%%', '%%%%')
+        result = result .. M.format(group)
     end
 
     return result
