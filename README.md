@@ -27,8 +27,10 @@
 ## 💥 Highlight
 
 ```text
-BufferTitleSel
-BufferTitleNoSel
+BufLineTitleSel
+BufLineTitleNoSel
+BufLineFill
+BufLine
 ```
 
 ## Thanks

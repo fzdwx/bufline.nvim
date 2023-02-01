@@ -32,7 +32,7 @@ M.title = function(bufnr, buffer_status)
 
     return {
         str = " " .. name .. " ",
-        hl = "BufferTitle" .. buffer_status
+        hl = "BufLineTitle" .. buffer_status
     }
 
 end
@@ -120,9 +120,9 @@ M.tabline = function()
             line = line .. M.cell(i)
         end
     end
-    line = line .. '%#TabLineFill#%='
+    line = line .. '%#BufLineFill#%='
     if vim.fn.tabpagenr('$') > 1 then
-        line = line .. '%#TabLine#%999XX'
+        line = line .. '%#BufLine#%999XX'
     end
     return line
 end
@@ -148,11 +148,11 @@ local setup = function(opts)
         M.tabline = opts.tabline
     end
 
-    vim.opt.tabline = '%!v:lua.require\'bufline\'.tabline()'
+    vim.opt.tabline = '%!v:lua.require\'bufline\'.show()'
     vim.cmd("set showtabline=2")
 end
 
 return {
     setup = setup,
-    tabline = M.tabline,
+    show = M.tabline,
 }
