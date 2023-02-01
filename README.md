@@ -1,8 +1,10 @@
 # bufline.nvim
 
-buffer line
+🤏 A lua buffer line.
 
-## Installation
+![img.png](img.png)
+
+## 🤖 Installation
 
 ```text
 {
@@ -22,7 +24,7 @@ buffer line
 },
 ```
 
-## Highlight
+## 💥 Highlight
 
 ```text
 BufferTitleSel
