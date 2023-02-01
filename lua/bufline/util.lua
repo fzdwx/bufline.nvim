@@ -161,7 +161,7 @@ _m = {
 function M.hl_buffer_icon(buffer_status, icon_hl)
     _m.hl.set(
             icon_hl .. buffer_status,
-            _m.hl.bg_or_default({ 'Buffer' .. buffer_status }, 'none'),
+            _m.hl.bg_or_default({ 'BufLineFill' }, 'none'),
             _m.hl.fg_or_default({ icon_hl }, 'none')
     )
 end
@@ -205,5 +205,7 @@ function M.check_hl_nil(group)
     group.hl = M.hl_tabline(group.hl)
     return group
 end
+
+M.hl = _m.hl
 
 return M

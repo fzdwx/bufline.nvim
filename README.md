@@ -6,7 +6,7 @@
 
 ## 🤖 Installation
 
-```text
+```lua
 {
     "fzdwx/bufline.nvim",
     event = "VeryLazy",

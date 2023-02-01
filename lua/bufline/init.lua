@@ -1,17 +1,19 @@
 local M = {}
 local util = require 'bufline.util'
 local fn = vim.fn
+local api = vim.api
 local hlexists = vim.fn.hlexists
 local hl_groups = {}
-local empty_hl = util.hl_tabline("")
+local fill_hl = "BufLineFill"
+local title_hl = "BufLineTitle"
+local line_hl = "BufLine"
 
 --- @return Group
 M.dirName = function(bufnr)
-    local file = fn.bufname(bufnr)
-    local dir = fn.fnamemodify(file, ':h')
-    local dirName = fn.fnamemodify(dir, ':t')
+    local dirName = api.nvim_eval("$PWD == $HOME ? '~' : substitute($PWD, '\\v(.*/)*', '', 'g')")
     return {
         str = dirName,
+        hl = fill_hl
     }
 end
 
@@ -46,7 +48,7 @@ M.title = function(bufnr, buffer_status)
 
     return {
         str = " " .. name .. " ",
-        hl = "BufLineTitle" .. buffer_status
+        hl = title_hl .. buffer_status
     }
 
 end
@@ -90,6 +92,7 @@ end
 M.separator = function(index)
     return {
         str = '',
+        hl = fill_hl
     }
 end
 
@@ -101,7 +104,7 @@ M.cell = function(index, current)
     local name = util.check_hl_nil(M.title(index, buffer_status))
     local separator = util.check_hl_nil(M.separator(index))
 
-    local empty = { str = " ", hl = empty_hl }
+    local empty = util.check_hl_nil({ str = " ", hl = fill_hl })
 
     local cells = {
         empty,
@@ -123,15 +126,19 @@ end
 M.bufline = function()
     local current = fn.bufnr('%')
     local line = util.format(util.check_hl_nil(M.dirName(current)))
-    for _, i in pairs(vim.api.nvim_list_bufs()) do
+
+    --[[ 每一个buffer ]]
+    for _, i in pairs(api.nvim_list_bufs()) do
         if fn.bufexists(i) == 1 and fn.buflisted(i) == 1 then
             line = line .. M.cell(i, current)
         end
     end
-    line = line .. '%#BufLineFill#%='
+
+    line = line .. '%#' .. fill_hl .. '#%='
     if vim.fn.tabpagenr('$') > 1 then
-        line = line .. '%#BufLine#%999XX'
+        line = line .. '%#' .. line_hl .. '#%999XX'
     end
+
     return line
 end
 
