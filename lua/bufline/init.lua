@@ -178,11 +178,14 @@ local setup = function(opts)
     if opts.cell then
         M.cell = opts.cell
     end
-    if opts.tabline then
-        M.tabline = opts.tabline
+    if opts.bufline then
+        M.bufline = opts.bufline
     end
     if opts.folder then
         M.folder = opts.folder
+    end
+    if opts.dirName then
+        M.dirName = opts.dirName
     end
 
     set_hl(0, "BufLineFolder", { default = true, bg = "", fg = "" })
@@ -194,3 +197,4 @@ return {
     setup = setup,
     show = M.bufline,
 }
+
