@@ -71,7 +71,7 @@ _m = {
     end,
 
     --- utilities for working with highlight groups.
-    --- @class bufferline.utils.hl
+    --- @class bufline.utils.hl
     hl = {
         --- @class barbar.utils.hl.group
         --- @field cterm integer|string

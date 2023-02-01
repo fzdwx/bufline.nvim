@@ -1,5 +1,5 @@
 local M = {}
-local util = require 'bufferline.util'
+local util = require 'bufline.util'
 local fn = vim.fn
 
 M.title = function(bufnr, buffer_status)
@@ -148,7 +148,7 @@ local setup = function(opts)
         M.tabline = opts.tabline
     end
 
-    vim.opt.tabline = '%!v:lua.require\'bufferline\'.tabline()'
+    vim.opt.tabline = '%!v:lua.require\'bufline\'.tabline()'
     vim.cmd("set showtabline=2")
 end
 

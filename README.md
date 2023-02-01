@@ -1,4 +1,4 @@
-# bufferline.nvim
+# bufline.nvim
 
 buffer line
 
@@ -6,7 +6,7 @@ buffer line
 
 ```text
 {
-    "fzdwx/bufferline.nvim",
+    "fzdwx/bufline.nvim",
     event = "VeryLazy",
     config = function()
         local buf = require("bufferline")
