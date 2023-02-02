@@ -16,7 +16,7 @@
     config = function()
         local buf = require("bufline")
         buf.setup({
-            separator = function(index)
+            separator = function()
                 return {
                     str = '',
                     hl = ""
@@ -38,5 +38,5 @@ BufLineFolder
 ```
 
 ## Thanks
-1. [luatab](https://github.com/alvarosevilla95/luatab.nvim)
+1. [luatab](https://github.com/alvarosevilla95/luata b.nvim)
 2. [barbar](https://github.com/romgrk/barbar.nvim)
