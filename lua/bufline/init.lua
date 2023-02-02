@@ -114,7 +114,7 @@ M.cell = function(index, current)
 
 	local icon = util.check_hl_nil(M.devicon(index, buffer_status, isSelected))
 	local name = util.check_hl_nil(M.title(index, buffer_status))
-	local separator = util.check_hl_nil(M.separator(index))
+	local separator = util.check_hl_nil(M.separator())
 
 	local empty = util.check_hl_nil({ str = " ", hl = fill_hl })
 
@@ -126,17 +126,12 @@ M.cell = function(index, current)
 	}
 
 	return util.format_groups(cells)
-
-	--return hl .. '%T' .. ' ' ..
-	--        M.devicon(index, isSelected) .. '%#TabLineSel#' ..
-	--        M.title(index) .. ' ' ..
-	--        M.modified(index) ..
-	--        M.separator(index)
 end
 
 M.bufline = function()
 	local current = fn.bufnr("%")
 	local last = fn.bufnr("$")
+
 	local header = {
 		util.check_hl_nil(M.folder(last)),
 		util.check_hl_nil(M.dirName(current)),
