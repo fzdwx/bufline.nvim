@@ -6,8 +6,9 @@ local hlexists = vim.fn.hlexists
 local hl_groups = {}
 local fill_hl = "BufLineFill"
 local title_hl = "BufLineTitle"
-local line_hl = "BufLine"
 local set_hl = vim.api.nvim_set_hl
+
+M.noname = " [No name] "
 
 --- @return Group
 M.folder = function(count)
@@ -32,14 +33,14 @@ end
 
 --- @return Group
 M.title = function(bufnr, buffer_status)
-	local file = vim.fn.bufname(bufnr)
-	local buftype = vim.fn.getbufvar(bufnr, "&buftype")
-	local filetype = vim.fn.getbufvar(bufnr, "&filetype")
+	local file = fn.bufname(bufnr)
+	local buftype = fn.getbufvar(bufnr, "&buftype")
+	local filetype = fn.getbufvar(bufnr, "&filetype")
 
 	local name
 
 	if buftype == "help" then
-		name = "help:" .. vim.fn.fnamemodify(file, ":t:r")
+		name = "help:" .. fn.fnamemodify(file, ":t:r")
 	elseif buftype == "quickfix" then
 		name = "quickfix"
 	elseif filetype == "TelescopePrompt" then
@@ -52,11 +53,11 @@ M.title = function(bufnr, buffer_status)
 		name = "FZF"
 	elseif buftype == "terminal" then
 		local _, mtch = string.match(file, "term:(.*):(%a+)")
-		name = mtch ~= nil and mtch or vim.fn.fnamemodify(vim.env.SHELL, ":t")
+		name = mtch ~= nil and mtch or fn.fnamemodify(vim.env.SHELL, ":t")
 	elseif file == "" then
 		name = "[No Name]"
 	else
-		name = vim.fn.pathshorten(vim.fn.fnamemodify(file, ":p:~:t"))
+		name = #(fn.fnamemodify(file, ":t")) > 0 and fn.fnamemodify(file, ":t") or M.noname
 	end
 
 	return {
@@ -180,6 +181,9 @@ local function init(opts)
 	if opts.dirName then
 		M.dirName = opts.dirName
 	end
+	if opts.noname then
+		M.noname = opts.noname
+	end
 end
 
 ---@class BufLineOpts
@@ -187,17 +191,19 @@ end
 ---@field modified function:string
 ---@field devicon function:Group
 ---@field separator function:Group
----@field cell  function string
----@field bufline function string
----@field folder function Group
----@field dirName function string
+---@field cell  function:string
+---@field bufline function:string
+---@field folder function:Group
+---@field dirName function:string
+---@field noname  string
 
 ---@param opts BufLineOpts
 local setup = function(opts)
 	init(opts)
+
 	set_hl(0, "BufLineFolder", { default = true, bg = "", fg = "" })
 	vim.opt.tabline = "%!v:lua.require'bufline'.show()"
-	vim.cmd("set showtabline=2")
+	vim.cmd("set showtabline=3")
 end
 
 return {

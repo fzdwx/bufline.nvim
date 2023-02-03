@@ -9,7 +9,7 @@
 ```lua
 {
     "fzdwx/bufline.nvim",
-    event = "BufReadPre",
+    event = "BufEnter",
     dependencies = {
         "nvim-tree/nvim-web-devicons",
     },
