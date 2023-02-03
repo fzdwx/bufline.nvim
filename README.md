@@ -1,6 +1,6 @@
 # bufline.nvim
 
-🤏 A lua buffer line.
+🤏 A simple lua buffer line.
 
 ![img.png](img.png)
 
@@ -26,8 +26,29 @@
     end,
 },
 ```
+## 📖 Configuration
 
-## 💥 Highlight
+```
+---@class BufLineOpts
+---@field title     function:Group
+---@field modified  function:string
+---@field devicon   function:Group
+---@field separator function:Group
+---@field cell      function:string
+---@field bufline   function:string
+---@field folder    function:Group
+---@field dirName   function:string
+---@field noname    string
+
+---@class Group
+---@field str string
+---@field hl  string
+--- group = {str = "helloworld", "BufLine"}
+
+buf.setup(opts)
+```
+
+### 💥 Highlight
 
 ```text
 BufLineTitleSel

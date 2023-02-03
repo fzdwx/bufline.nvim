@@ -186,6 +186,10 @@ local function init(opts)
 	end
 end
 
+---@class Group
+---@field str string
+---@field hl  string
+
 ---@class BufLineOpts
 ---@field title function:Group
 ---@field modified function:string
